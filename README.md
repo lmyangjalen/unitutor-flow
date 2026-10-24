@@ -1,2 +1,115 @@
-# unitutor-flow
-An open-source AI workflow for university tutors — personalized lesson planning, student progress tracking, parent communication, and client retention.
+# UniTutor Flow 🎓
+
+**大学生家教教学与长期合作工作流**  
+*AI-assisted tutoring workflow for university student tutors*
+
+> **核心目标：** 不只帮大学生家教备好一节课，而是帮助他们持续交付看得见的教学价值，建立学生与家长的信任，让续课来自真实进步和良好合作，而不是话术或压力。
+
+当前版本：**v0.3.0 · public-preview prototype**。这是一个由提示词、Agent Skill 规则、模板和虚构案例组成的开源工具包，不是已部署的网站，也不会自动把学生资料保存到云端。
+
+## 谁适合使用？
+
+- 正在做小学或初中一对一家教的大学生；
+- 学科知识尚可，但缺少系统的学情诊断、课堂设计和家校沟通方法；
+- 希望每节课都能积累证据、让家长理解教学价值，并提高长期合作质量的家教老师。
+
+## 入口 0：一个网页就能用（适合非技术家教）
+
+本项目另附零后端的网页指令生成器：[`docs/index.html`](docs/index.html)。用户选择任务、年级和科目，就能在浏览器本地生成指令，复制到常用 AI 工具使用。**不需要 GitHub 账户，也不需要安装 Skill。**
+
+发布仓库后，维护者可以在 GitHub 仓库 **Settings → Pages → Deploy from a branch → main /docs → Save** 启用 GitHub Pages。部署成功后，正式网址通常为 `https://lmyangjalen.github.io/unitutor-flow/`，须以 Pages 设置页实际显示的 URL 为准。**在启用并验证之前，请勿将该网址宣称为已上线。**
+
+网页不包含 API key、不连接任何模型、不会向开发者服务器上传填写的信息，也不会自动保存档案；教师需要将生成的指令复制到自己的 AI 对话中，仍须检查教学内容。
+
+## 30 秒开始：零安装版本
+
+1. 打开 [`START-HERE.md`](START-HERE.md)。
+2. 复制其中的「通用家教 Flow 指令」到你常用的 AI 聊天工具。
+3. 提供学生年级、科目、课时、已知问题，以及你有权使用且已脱敏的教材或错题。
+4. 课后把真实课堂表现告诉 AI，让它生成家长反馈、档案更新条目和下一次课计划。
+5. 自己保存学生档案；新对话或不同 AI 产品不一定会自动记住过去的信息。
+
+复制提示词是零安装使用方式，**不等于在该 AI 产品中原生安装了 Skill**。
+
+## 这套 Flow 解决什么问题？
+
+| 模块 | 关键问题 | 交付物 |
+|---|---|---|
+| 学生画像 | 孩子怎么参与、什么会激发兴趣、遇到困难时有什么表现？ | 有证据、可更新的学习互动画像 |
+| 家长期待 | 家长最看重什么、希望怎样沟通、怎样判断课程有效？ | 家长合作画像与目标对齐记录 |
+| 学情诊断 | 真正的知识漏洞是什么，而不是笼统地说“基础差”？ | 错因分析、待验证假设、诊断题 |
+| 个性化备课 | 这节课最值得解决的 1–2 个问题是什么？ | 分钟级教案、学生讲义、教师解析 |
+| 课后闭环 | 本节课有什么可验证的进步，下一步是什么？ | 客观反馈、档案更新、复测计划 |
+| 长期合作 | 家长是否看得见价值？是否存在预期落差或不适配？ | 阶段回顾、沟通建议、续课规划或诚实退出建议 |
+
+## 客户留存的原则
+
+本项目将“留存”理解为**通过持续的教学质量、透明沟通和明确预期，让合适的家庭愿意继续合作**。不以续课为由夸大成绩、制造焦虑、给孩子贴人格标签、向家长施压，或故意制造依赖。若课程不再适合学生，应如实说明并提供调整或结束合作的选项。
+
+## 文件地图
+
+```text
+unitutor-flow/
+├── SKILL.md
+├── README.md
+├── START-HERE.md
+├── QUICKSTART.md
+├── CHANGELOG.md
+├── LICENSE
+├── docs/
+│   └── index.html           # GitHub Pages 交互式指令生成器
+├── references/
+│   ├── student-profile.md
+│   ├── parent-profile.md
+│   ├── retention-playbook.md
+│   ├── after-lesson.md
+│   └── lesson-quality-checklist.md
+├── templates/
+│   ├── student-intake.md
+│   ├── student-profile.md
+│   ├── parent-profile.md
+│   ├── after-lesson.md
+│   ├── parent-message.md
+│   ├── progress-review.md
+│   └── renewal-conversation.md
+├── examples/
+│   ├── grade8-english-fictitious.md
+│   └── retention-cycle-fictitious.md
+└── tests/
+    └── acceptance-cases.md
+```
+
+## 分享给其他大学生：三种难度
+
+1. **最简单**：分享仓库链接，让对方打开 `START-HERE.md` 复制指令，直接在常用 AI 对话中使用。
+2. **安装 Skill**：在 GitHub Release 附上 `UniTutor-Flow-Skill-v0.3.0.zip`，适用平台支持自定义 Skills 时，对方可下载上传。这个包含 `SKILL.md`、references、templates 和虚构 examples。
+3. **参与开发**：分享完整源码包或仓库，让懂技术的用户改进模板、案例和测试。
+
+## 使用正式 Skill
+
+- **Claude.ai**：若账号支持自定义 Skills，可按 Claude 当前界面说明上传 `UniTutor-Flow-Skill-v0.3.0.zip`。
+- **Claude Code / 兼容 Agent Skills 的工具**：把包含 `SKILL.md` 的文件夹放到该工具支持的 Skills 目录，具体路径以工具官方文档为准。
+- **ChatGPT**：可把 `START-HERE.md` 指令放入项目指令，或把相关文件作为项目资料；这属于使用项目规则，不应误称为所有 ChatGPT 环境都能原生安装 Agent Skill。
+- **其他 AI 工具**：直接复制 `START-HERE.md` 的指令通常最容易开始，但效果和记忆能力取决于具体产品。
+
+更详细的说明见 [`QUICKSTART.md`](QUICKSTART.md)。
+
+## 隐私与教学边界
+
+- 公开示例必须使用虚构数据；不要上传或公开未成年人的姓名、联系方式、学校班级、家庭住址、可识别照片、完整成绩单或未经授权的教材扫描件。
+- 档案只记录与教学有关的信息；性格相关内容记录可观察行为与学生本人表达，不作心理诊断，不把推测写成事实。
+- AI 生成的题目、答案、教材对应关系、教学建议和家长消息都需要老师检查。
+- 不承诺特定分数提升，不虚构进步证据，不把“当堂会做”直接等同于长期掌握。
+- 本工具不保证续课率或学习成绩；它提供流程和检查清单，实际效果需要真实案例验证。
+
+## 参与改进
+
+欢迎提交 Issue 或 Pull Request。优先欢迎：不同年级/科目模板、经过人工审核的虚构案例、课堂质量检查项、家长反馈表达改进、兼容性测试。请勿在公开 Issue 中披露学生个人信息。
+
+## 建议的下一步
+
+先用 3–5 个虚构或脱敏案例测试：输出是否准确、课堂时间是否可执行、反馈是否有证据、学生画像是否避免贴标签、续课建议是否诚实。收集测试结果后再发布稳定版本。
+
+## License
+
+MIT，详见 [`LICENSE`](LICENSE)。

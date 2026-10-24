@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="UniTutor Flow：大学生家教的免费 AI 工作流。学情诊断、个性化备课、课后反馈、阶段复盘，一键生成 AI 指令。" />
+  <meta name="theme-color" content="#12263a" />
+  <title>UniTutor Flow｜大学生家教 AI 工作流</title>
+  <style>
+    :root { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: #182b3c; background: #f7f8f6; font-size: 16px; }
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.65; }
+    .shell { width: min(1070px, calc(100% - 36px)); margin: auto; }
+    header { background: #10273a; color: white; padding: 24px 0 66px; }
+    .top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .logo { color: #fff; font-size: 18px; text-decoration: none; font-weight: 800; letter-spacing: -.025em; }
+    .tag { display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,.28); color: #e6eff0; border-radius: 99px; padding: 4px 11px; font-size: 12px; }
+    .github { text-decoration: none; color: #d8e5e6; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,.3); }
+    .hero { padding-top: 54px; max-width: 810px; }
+    h1 { font-size: clamp(32px,5vw,56px); line-height: 1.2; letter-spacing: -.04em; margin: 18px 0; }
+    .hero p { color: #d4e2e7; font-size: clamp(15px,1.8vw,19px); margin: 0; }
+    .accent { color: #86d9ca; }
+    .capline { margin-top: 22px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .pill { border-radius: 50px; background: rgba(255,255,255,.10); padding: 5px 13px; font-size: 12px; color: #e6eeee; }
+    main { margin-top: -28px; padding-bottom: 70px; }
+    .work { background: #fff; border-radius: 18px; box-shadow: 0 16px 55px rgba(23,47,60,.11); padding: clamp(20px,4vw,36px); }
+    .titleRow { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+    h2 { font-size: clamp(22px,2.8vw,28px); margin: 0; letter-spacing: -.03em; }
+    .fine { font-size: 13px; color: #657787; }
+    .tabs { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; margin: 24px 0; }
+    .tab { border: 1px solid #dce5e5; background: #f7f9f8; color: #325163; border-radius: 9px; cursor: pointer; padding: 11px 7px; font-size: 14px; font-weight: 650; }
+    .tab[aria-selected="true"] { background: #123b46; color: #fff; border-color: #123b46; }
+    .grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 15px; }
+    label { display: block; font-size: 13px; font-weight: 670; margin-bottom: 7px; }
+    input, select, textarea { appearance: none; width: 100%; border: 1px solid #cfdbdf; border-radius: 9px; padding: 12px 13px; font: inherit; font-size: 14px; color: #213b49; background: #fff; outline-offset: 2px; }
+    input:focus,select:focus,textarea:focus { outline: 2px solid #6baea8; }
+    textarea { min-height: 102px; resize: vertical; }
+    .span2 { grid-column: 1 / -1; }
+    .actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+    button.primary, .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: none; border-radius: 9px; font-weight: 700; text-decoration: none; cursor: pointer; }
+    button.primary { background: #087e74; color: white; padding: 13px 21px; font-size: 15px; }
+    button.primary:hover { background: #086b61; }
+    .btn { color: #12655e; background: #eaf4f1; padding: 12px 17px; font-size: 14px; }
+    .preview { margin-top: 26px; background: #f6faf8; padding: 20px; border: 1px solid #d8e8e3; border-radius: 12px; }
+    .preview textarea { background: #fff; min-height: 240px; margin-top: 10px; white-space: pre-wrap; }
+    .hidden { display: none; }
+    .steps { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; padding-top: 35px; }
+    .step { border: 1px solid #e2e8e7; border-radius: 13px; padding: 18px; background: white; }
+    .num { font-size: 12px; color: #0b8378; font-weight: 850; letter-spacing: .05em; }
+    h3 { margin: 7px 0 6px; font-size: 16px; }
+    .step p { font-size: 13px; color: #657787; margin: 0; }
+    .note { font-size: 13px; color: #687b89; margin-top: 20px; }
+    footer { border-top: 1px solid #e2e8e5; padding: 25px 0 40px; font-size: 12px; color: #708290; }
+    footer a { color: #3e6b70; }
+    @media (max-width:680px) { .top { align-items: flex-start; } .hero { padding-top: 35px; } header { padding-bottom: 58px; }
+      .grid { grid-template-columns: 1fr; } .span2 { grid-column: auto; }
+      .tabs { grid-template-columns: repeat(2,minmax(0,1fr)); } .steps { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="shell">
+      <div class="top">
+        <a class="logo" href="#">🎓 UniTutor Flow</a>
+        <a class="github" href="https://github.com/lmyangjalen/unitutor-flow" target="_blank" rel="noopener noreferrer">GitHub 开源项目 ↗</a>
+      </div>
+      <div class="hero">
+        <span class="tag">开源 · 免费使用 · 无需安装</span>
+        <h1>家教不只是会做题。<br/><span class="accent">更重要的是把学生教会。</span></h1>
+        <p>给大学生家教的 AI 工作流。从了解学生、准备课堂，到课后反馈和长期合作——用更清晰的方法，帮助孩子看见真实进步。</p>
+        <div class="capline"><span class="pill">学情诊断</span><span class="pill">个性化备课</span><span class="pill">课后反馈</span><span class="pill">阶段复盘</span></div>
+      </div>
+    </div>
+  </header>
+  <main class="shell">
+    <section class="work" aria-labelledby="work-title">
+      <div class="titleRow"><h2 id="work-title">选择任务，生成你的家教指令</h2><span class="fine">不需要注册新账号 · 不上传学生资料</span></div>
+      <div class="tabs" role="tablist" aria-label="家教任务">
+        <button class="tab" role="tab" aria-selected="true" data-mode="diagnose">① 学情诊断</button>
+        <button class="tab" role="tab" aria-selected="false" data-mode="plan">② 智能备课</button>
+        <button class="tab" role="tab" aria-selected="false" data-mode="feedback">③ 课后反馈</button>
+        <button class="tab" role="tab" aria-selected="false" data-mode="review">④ 阶段复盘</button>
+      </div>
+      <form id="builder">
+        <div class="grid">
+          <div><label for="grade">学生年级</label><select id="grade"><option>小学三年级</option><option>小学四年级</option><option>小学五年级</option><option>小学六年级</option><option>初一</option><option selected>初二</option><option>初三</option><option>高一</option><option>高二</option><option>高三</option><option>其他</option></select></div>
+          <div><label for="subject">辅导科目</label><select id="subject"><option selected>英语</option><option>数学</option><option>语文</option><option>物理</option><option>化学</option><option>其他</option></select></div>
+          <div><label for="minutes">单次课时</label><select id="minutes"><option>60</option><option>90</option><option selected>120</option><option>150</option><option>180</option></select></div>
+          <div><label for="textbook">教材版本（可选）</label><input id="textbook" placeholder="如：北师大版八年级上册" maxlength="120" /></div>
+          <div class="span2"><label for="problems">已知问题 / 课堂记录（不用真实姓名）</label><textarea id="problems" placeholder="如：词汇基础薄弱，阅读理解 C 篇失分；做题能找到原文，但不理解同义替换。" maxlength="3000"></textarea></div>
+          <div><label for="character">学习互动特点（可选）</label><textarea id="character" placeholder="如：碰到难题容易说‘我不会’，示范一道后愿意继续尝试。记录行为，不贴性格标签。" maxlength="1200"></textarea></div>
+          <div><label for="parent">家长期待（可选）</label><textarea id="parent" placeholder="如：希望孩子更愿意主动学习，每次课后收到简短反馈。" maxlength="1200"></textarea></div>
+        </div>
+        <div class="actions">
+          <button type="submit" class="primary">✨ 生成 AI 指令</button>
+          <span class="fine">指令在你的浏览器本地生成，不会上传到这个网站。</span>
+        </div>
+      </form>
+      <section class="preview hidden" id="preview" aria-live="polite">
+        <div class="titleRow"><h3>你的指令已生成</h3><span id="status" class="fine">复制后发送给你常用的 AI</span></div>
+        <textarea id="output" aria-label="生成的家教指令" readonly></textarea>
+        <div class="actions"><button id="copy" class="primary" type="button">复制全部指令</button><a class="btn" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">打开 ChatGPT ↗</a><a class="btn" href="https://claude.ai/" target="_blank" rel="noopener noreferrer">打开 Claude ↗</a></div>
+      </section>
+    </section>
+    <div class="steps" aria-label="使用步骤">
+      <div class="step"><span class="num">STEP 01</span><h3>选择家教任务</h3><p>按学生情况选择诊断、备课、课后反馈或阶段复盘。</p></div>
+      <div class="step"><span class="num">STEP 02</span><h3>复制到 AI 对话</h3><p>复制页面生成的指令，发送给你常用的 ChatGPT、Claude 等工具。</p></div>
+      <div class="step"><span class="num">STEP 03</span><h3>核对、使用、持续优化</h3><p>教师核对题目答案，记录课堂观察，下次继续调整。</p></div>
+    </div>
+    <p class="note">隐私提醒：请勿填写未成年人的真实姓名、电话、地址、学校班级或其他能识别身份的信息。不要把未经授权的试卷/课本扫描件公开。本站只是生成指令的静态页面，不提供模型推理，也不会自动保存或同步学生档案。课堂和家长沟通内容请人工核对。</p>
+  </main>
+  <footer><div class="shell">UniTutor Flow · 用真实进步赢得长期信任 · <a href="https://github.com/lmyangjalen/unitutor-flow">GitHub / 阅读源码与使用说明</a> · MIT License</div></footer>
+  <script>
+    (() => {
+      'use strict';
+      const tabs = Array.from(document.querySelectorAll('.tab'));
+      let mode = 'diagnose';
+      const tasks = {
+        diagnose: '请根据现有资料进行学情诊断：先把事实、可能原因、待验证信息分开；列出最值得优先验证的1—2个学习困难；给出10—15分钟微诊断题、参考答案、每题要观察的思考过程；避免根据单次表现给学生贴标签。',
+        plan: '请生成一节可以实际执行的个性化家教课：最多两个可测教学目标，分钟级安排（教师动作/学生活动/检查方式），结合学习互动特点设计提问和反馈；同时输出教师教案、无答案的学生练习讲义、核对过的答案解析、离堂测和作业。题目若为原创，标注原创；不编造真题或教材页码。',
+        feedback: '请根据我给出的真实课堂记录，制作：①老师内部复盘（完成的目标与可观察证据）；②简洁、自然、可发家长的微信反馈；③学生学习互动画像的谨慎更新建议；④下节课优先级和简单家庭任务。资料不足时不要虚构已取得的进步。',
+        review: '请准备3—5节课后的阶段回顾：初始目标、实际上过的内容、可验证的变化、尚未解决的问题、下一阶段2—4个目标，以及建议的复习/上课频率及理由；另提供一段不施压的续课沟通话术。若证据不足、效果不理想或并不适合继续辅导，请如实说明并给出调整或暂停建议。'
+      };
+      tabs.forEach(tab => tab.addEventListener('click', () => {
+        mode = tab.dataset.mode;
+        tabs.forEach(t => t.setAttribute('aria-selected', String(t === tab)));
+        document.getElementById('preview').classList.add('hidden');
+      }));
+      const get = id => document.getElementById(id).value.trim();
+      document.getElementById('builder').addEventListener('submit', e => {
+        e.preventDefault();
+        const parts = [
+          '你是 UniTutor Flow，一个帮助中国大学生兼职家教进行学情诊断、备课、反馈和长期合作的 AI 助手。首要目标是持续交付真实教学价值，不通过夸大进步、制造焦虑或操控话术追求续课。',
+          '',
+          '【本次任务】', tasks[mode], '',
+          '【学生基本情况（匿名）】',
+          '年级：' + get('grade'),
+          '科目：' + get('subject'),
+          '本次课时：' + get('minutes') + '分钟',
+          '教材版本：' + (get('textbook') || '尚未提供'),
+          '【已知问题 / 课堂记录】', get('problems') || '暂无，需要先做简短诊断',
+          '【学习互动特点】', get('character') || '暂无观察记录，不要推断性格',
+          '【家长期待】', get('parent') || '尚未确认，请勿擅自假设', '',
+          '【统一质量规则】',
+          '1. 区分事实、假设、待核实内容，尤其不要对未成年人下心理诊断或给出固定性格标签。',
+          '2. 使用中文、贴合中国学生和已提供教材；原创题注明原创，逐题核对答案。',
+          '3. 不虚构试卷分数、过往进步、家长反馈、课程成果或教材出处。',
+          '4. 建议以学生独立掌握和家长知情为目标，不故意制造依赖；课程不适合时可提出调整或停止。',
+          '5. 如果缺少关键资料，基于现有材料先做能做的部分，再提出最多一个必要问题。',
+          '6. 个人学生档案默认由家教老师自己保存，不声称已自动持久化。'
+        ];
+        const output = document.getElementById('output');
+        output.value = parts.join('\n');
+        document.getElementById('preview').classList.remove('hidden');
+        document.getElementById('status').textContent = '复制后发送给你常用的 AI';
+        output.focus({preventScroll:true});
+        document.getElementById('preview').scrollIntoView({behavior:'smooth',block:'nearest'});
+      });
+      document.getElementById('copy').addEventListener('click', async () => {
+        const text = document.getElementById('output').value;
+        const status = document.getElementById('status');
+        if (!text) return;
+        try {
+          if (!navigator.clipboard?.writeText) throw new Error('Clipboard API unavailable');
+          await navigator.clipboard.writeText(text);
+          status.textContent = '已复制！打开 AI 工具粘贴即可。';
+        } catch (_) {
+          const output = document.getElementById('output');
+          output.focus(); output.select();
+          try {
+            if (document.execCommand('copy')) { status.textContent = '已复制！'; return; }
+          } catch (_) {}
+          status.textContent = '请按 Ctrl+C（Mac 为 ⌘+C）复制已选中的内容。';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

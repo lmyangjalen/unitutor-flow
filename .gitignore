@@ -1,0 +1,6 @@
+# Local notes and real student records must never be committed
+private-student-data/
+*.student-private.md
+.env
+.DS_Store
+Thumbs.db
