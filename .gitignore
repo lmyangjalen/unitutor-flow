@@ -4,3 +4,10 @@ private-student-data/
 .env
 .DS_Store
 Thumbs.db
+
+# Private tutor and student data: never commit
+students/
+private-workspace/
+private-students/
+tutor-profile.md
+**/student-real-*/
