@@ -28,7 +28,16 @@
     .titleRow { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
     h2 { font-size: clamp(22px,2.8vw,28px); margin: 0; letter-spacing: -.03em; }
     .fine { font-size: 13px; color: #657787; }
-    .tabs { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; margin: 24px 0; }
+    .freeform { padding: 18px; border-radius: 12px; border: 1px solid #cfe0dd; background: #f3f9f7; margin-bottom: 20px; }
+    .freeform textarea { min-height: 155px; }
+    .samples { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 14px 0; }
+    .sample { padding: 7px 12px; border-radius: 99px; border: 1px solid #d3e3df; background: white; color: #246860; cursor: pointer; font: inherit; font-size: 13px; }
+    .fileHint { margin-top: 10px; border-top: 1px solid #d9e6e3; padding-top: 12px; }
+    .fileHint input { font-size: 12px; background: white; }
+    details { margin: 12px 0 0; border-radius: 10px; border: 1px solid #e2ebe8; padding: 14px; }
+    summary { font-weight: 700; color: #315a58; cursor: pointer; }
+    details .grid { margin-top: 16px; }
+    .tabs { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 8px; margin: 24px 0; }
     .tab { border: 1px solid #dce5e5; background: #f7f9f8; color: #325163; border-radius: 9px; cursor: pointer; padding: 11px 7px; font-size: 14px; font-weight: 650; }
     .tab[aria-selected="true"] { background: #123b46; color: #fff; border-color: #123b46; }
     .grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 15px; }
@@ -75,14 +84,36 @@
   </header>
   <main class="shell">
     <section class="work" aria-labelledby="work-title">
-      <div class="titleRow"><h2 id="work-title">选择任务，生成你的家教指令</h2><span class="fine">不需要注册新账号 · 不上传学生资料</span></div>
+      <div class="titleRow"><h2 id="work-title">随口说一句，交给 AI 处理</h2><span class="fine">不需要注册新账号 · 不上传学生资料</span></div>
       <div class="tabs" role="tablist" aria-label="家教任务">
-        <button class="tab" role="tab" aria-selected="true" data-mode="diagnose">① 学情诊断</button>
+        <button class="tab" role="tab" aria-selected="true" data-mode="auto">✨ 自由描述 · 自动判断</button>
+        <button class="tab" role="tab" aria-selected="false" data-mode="diagnose">① 学情诊断</button>
         <button class="tab" role="tab" aria-selected="false" data-mode="plan">② 智能备课</button>
         <button class="tab" role="tab" aria-selected="false" data-mode="feedback">③ 课后反馈</button>
         <button class="tab" role="tab" aria-selected="false" data-mode="review">④ 阶段复盘</button>
       </div>
       <form id="builder">
+        <div class="freeform">
+          <label for="free-input">直接描述你的情况（不必整理，不必先选任务）</label>
+          <textarea id="free-input" placeholder="比如：刚和家长聊完，孩子不爱学英语，词汇基础差，周六第一次试课两小时。我该怎么回家长，第一次上课怎么安排？" maxlength="8000"></textarea>
+          <div class="actions">
+            <button type="button" class="btn" id="mic">🎙 开始语音转文字</button>
+            <span id="speech-status" class="fine" aria-live="polite">麦克风功能依赖浏览器支持；也可以直接用手机/系统输入法的语音键。</span>
+          </div>
+          <div class="samples">
+            <span class="fine">试一句：</span>
+            <button type="button" class="sample" data-sample="我刚跟初二英语家长沟通完，孩子单词不牢，阅读题失分多。帮我写一段自然的家长回复，并给第一次两小时试课的流程和开场提问。">试课怎么安排</button>
+            <button type="button" class="sample" data-sample="今天上完课，学生10道阅读题独立做对4题，讲解后又对3题，同义替换仍不熟。我想给家长发微信，也想知道下次课怎么教。">课后语音复盘</button>
+            <button type="button" class="sample" data-sample="我有一份初二英语试卷和几张错题照片，准备发给AI。请分析错误原因，给我120分钟教案、学生讲义、教师答案与练习。">上传试卷备课</button>
+          </div>
+          <div class="fileHint">
+            <label for="attachments">有教材、截图或试卷？（可选）</label>
+            <input id="attachments" type="file" multiple accept=".pdf,.doc,.docx,.txt,.md,.png,.jpg,.jpeg,.webp,.heic,.mp3,.m4a,.wav" />
+            <span class="fine">这里仅显示文件名，**不会读取或上传内容**；复制指令后，请在 AI 对话中重新上传这些文件。录音也需由你的 AI 应用支持识别。</span>
+          </div>
+        </div>
+        <details id="extra">
+          <summary>补充学生年级、学科等信息（可选）</summary>
         <div class="grid">
           <div><label for="grade">学生年级</label><select id="grade"><option>小学三年级</option><option>小学四年级</option><option>小学五年级</option><option>小学六年级</option><option>初一</option><option selected>初二</option><option>初三</option><option>高一</option><option>高二</option><option>高三</option><option>其他</option></select></div>
           <div><label for="subject">辅导科目</label><select id="subject"><option selected>英语</option><option>数学</option><option>语文</option><option>物理</option><option>化学</option><option>其他</option></select></div>
@@ -92,31 +123,33 @@
           <div><label for="character">学习互动特点（可选）</label><textarea id="character" placeholder="如：碰到难题容易说‘我不会’，示范一道后愿意继续尝试。记录行为，不贴性格标签。" maxlength="1200"></textarea></div>
           <div><label for="parent">家长期待（可选）</label><textarea id="parent" placeholder="如：希望孩子更愿意主动学习，每次课后收到简短反馈。" maxlength="1200"></textarea></div>
         </div>
+        </details>
         <div class="actions">
-          <button type="submit" class="primary">✨ 生成 AI 指令</button>
+          <button type="submit" class="primary">✨ 生成完整 AI 处理指令</button>
           <span class="fine">指令在你的浏览器本地生成，不会上传到这个网站。</span>
         </div>
       </form>
       <section class="preview hidden" id="preview" aria-live="polite">
-        <div class="titleRow"><h3>你的指令已生成</h3><span id="status" class="fine">复制后发送给你常用的 AI</span></div>
+        <div class="titleRow"><h3>指令已生成：复制到 AI 才会得到真正的回复</h3><span id="status" class="fine">复制后发送给你常用的 AI</span></div>
         <textarea id="output" aria-label="生成的家教指令" readonly></textarea>
         <div class="actions"><button id="copy" class="primary" type="button">复制全部指令</button><a class="btn" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">打开 ChatGPT ↗</a><a class="btn" href="https://claude.ai/" target="_blank" rel="noopener noreferrer">打开 Claude ↗</a></div>
       </section>
     </section>
     <div class="steps" aria-label="使用步骤">
-      <div class="step"><span class="num">STEP 01</span><h3>选择家教任务</h3><p>按学生情况选择诊断、备课、课后反馈或阶段复盘。</p></div>
-      <div class="step"><span class="num">STEP 02</span><h3>复制到 AI 对话</h3><p>复制页面生成的指令，发送给你常用的 ChatGPT、Claude 等工具。</p></div>
-      <div class="step"><span class="num">STEP 03</span><h3>核对、使用、持续优化</h3><p>教师核对题目答案，记录课堂观察，下次继续调整。</p></div>
+      <div class="step"><span class="num">STEP 01</span><h3>直接说出情况</h3><p>说话转文字或粘贴聊天、课堂记录，不要求先选择流程。</p></div>
+      <div class="step"><span class="num">STEP 02</span><h3>把指令发给 AI</h3><p>如果还有试卷、截图、录音或课本，请在 AI 对话中真实上传附件。</p></div>
+      <div class="step"><span class="num">STEP 03</span><h3>核对、使用、持续优化</h3><p>AI 自动组织本次要用的教案、话术或反馈；教师核对，保存档案。</p></div>
     </div>
-    <p class="note">隐私提醒：请勿填写未成年人的真实姓名、电话、地址、学校班级或其他能识别身份的信息。不要把未经授权的试卷/课本扫描件公开。本站只是生成指令的静态页面，不提供模型推理，也不会自动保存或同步学生档案。课堂和家长沟通内容请人工核对。</p>
+    <p class="note">隐私提醒：请勿填写未成年人的真实姓名、电话、地址、学校班级或其他能识别身份的信息。不要把未经授权的试卷/课本扫描件公开。本站只是生成指令的静态页面，不提供模型推理，不读取你选择的文件，也不会自动保存或同步学生档案。语音转写可能依赖浏览器厂商提供的语音识别服务，涉及私密语音时请直接使用你信任的 AI 应用或手动输入。课堂和家长沟通内容请人工核对。</p>
   </main>
   <footer><div class="shell">UniTutor Flow · 用真实进步赢得长期信任 · <a href="https://github.com/lmyangjalen/unitutor-flow">GitHub / 阅读源码与使用说明</a> · MIT License</div></footer>
   <script>
     (() => {
       'use strict';
       const tabs = Array.from(document.querySelectorAll('.tab'));
-      let mode = 'diagnose';
+      let mode = 'auto';
       const tasks = {
+        auto: '请先理解老师的随口描述或语音转写，根据内容自动识别家教流程中的必要任务。如果是家长回复，先给可直接发送的自然微信；如果是材料备课，给教师教案、学生讲义和答案；如果是课后口述，给课堂复盘、家长微信、下节课计划、档案更新。多种需求同时出现时自动整合，不遗漏必要交付，也不机械堆无关模块。',
         diagnose: '请根据现有资料进行学情诊断：先把事实、可能原因、待验证信息分开；列出最值得优先验证的1—2个学习困难；给出10—15分钟微诊断题、参考答案、每题要观察的思考过程；避免根据单次表现给学生贴标签。',
         plan: '请生成一节可以实际执行的个性化家教课：最多两个可测教学目标，分钟级安排（教师动作/学生活动/检查方式），结合学习互动特点设计提问和反馈；同时输出教师教案、无答案的学生练习讲义、核对过的答案解析、离堂测和作业。题目若为原创，标注原创；不编造真题或教材页码。',
         feedback: '请根据我给出的真实课堂记录，制作：①老师内部复盘（完成的目标与可观察证据）；②简洁、自然、可发家长的微信反馈；③学生学习互动画像的谨慎更新建议；④下节课优先级和简单家庭任务。资料不足时不要虚构已取得的进步。',
@@ -126,29 +159,74 @@
         mode = tab.dataset.mode;
         tabs.forEach(t => t.setAttribute('aria-selected', String(t === tab)));
         document.getElementById('preview').classList.add('hidden');
+        if (mode !== 'auto') document.getElementById('extra').open = true;
       }));
       const get = id => document.getElementById(id).value.trim();
+      document.querySelectorAll('.sample').forEach(el => el.addEventListener('click', () => {
+        const t = document.getElementById('free-input');
+        t.value = el.dataset.sample;
+        t.focus();
+      }));
+      const microphone = document.getElementById('mic');
+      const speechStatus = document.getElementById('speech-status');
+      const SpeechInput = window.SpeechRecognition || window.webkitSpeechRecognition;
+      let recognition = null;
+      if (!SpeechInput) {
+        microphone.disabled = true;
+        speechStatus.textContent = '当前浏览器暂不支持网页语音转文字。可直接使用手机或系统输入法的语音键。';
+      } else {
+        recognition = new SpeechInput();
+        recognition.lang = 'zh-CN';
+        recognition.continuous = true;
+        recognition.interimResults = false;
+        recognition.onresult = event => {
+          const transcript = Array.from(event.results).slice(event.resultIndex).map(r => r[0].transcript).join(' ');
+          const t = document.getElementById('free-input');
+          t.value += (t.value.trim() ? ' ' : '') + transcript;
+        };
+        recognition.onstart = () => { microphone.textContent = '⏹ 停止录音'; speechStatus.textContent = '正在识别语音，识别服务可能由浏览器厂商提供。'; };
+        recognition.onend = () => { microphone.textContent = '🎙 开始语音转文字'; speechStatus.textContent = '语音转写已结束，可以检查错字后生成指令。'; };
+        recognition.onerror = event => { speechStatus.textContent = '语音识别未成功：' + event.error + '。可以使用键盘或系统语音输入。'; };
+        microphone.addEventListener('click', () => {
+          try { if (microphone.textContent.includes('停止')) recognition.stop(); else recognition.start(); }
+          catch (_) { speechStatus.textContent = '麦克风暂时无法启动，请允许麦克风权限或用系统语音输入。'; }
+        });
+      }
       document.getElementById('builder').addEventListener('submit', e => {
         e.preventDefault();
+        const raw = get('free-input');
+        const files = Array.from(document.getElementById('attachments').files || []).map(f => f.name);
+        if (mode === 'auto' && !raw && files.length === 0) {
+          document.getElementById('speech-status').textContent = '先描述一下你遇到的家教问题，或选择示例。';
+          document.getElementById('free-input').focus();
+          return;
+        }
         const parts = [
           '你是 UniTutor Flow，一个帮助中国大学生兼职家教进行学情诊断、备课、反馈和长期合作的 AI 助手。首要目标是持续交付真实教学价值，不通过夸大进步、制造焦虑或操控话术追求续课。',
           '',
           '【本次任务】', tasks[mode], '',
+          '【老师的原话 / 语音转写】', raw || '老师主要提供了附件，请先分析实际收到的资料。', '',
+          '【附件说明】', files.length ? '我已选择这些文件：' + files.join('、') + '。注意这些文件并未通过本网页传送，请在 AI 对话里检查是否真正收到附件，未收到时明确提示老师补传。' : '如后续附图、PDF 或录音，请根据真正收到的内容分析，不要假装看过。', '',
           '【学生基本情况（匿名）】',
-          '年级：' + get('grade'),
-          '科目：' + get('subject'),
-          '本次课时：' + get('minutes') + '分钟',
-          '教材版本：' + (get('textbook') || '尚未提供'),
-          '【已知问题 / 课堂记录】', get('problems') || '暂无，需要先做简短诊断',
-          '【学习互动特点】', get('character') || '暂无观察记录，不要推断性格',
-          '【家长期待】', get('parent') || '尚未确认，请勿擅自假设', '',
+          ...(document.getElementById('extra').open ? [
+            '年级：' + get('grade'),
+            '科目：' + get('subject'),
+            '本次课时：' + get('minutes') + '分钟',
+            '教材版本：' + (get('textbook') || '尚未提供'),
+            '【已知问题 / 课堂记录】', get('problems') || '未补充',
+            '【学习互动特点】', get('character') || '暂无观察记录，不要推断性格',
+            '【家长期待】', get('parent') || '尚未确认，请勿擅自假设' 
+          ] : ['用户没有填写结构化资料，请从自由输入判断年级、科目、时长；未提及的不要假设。']), '',
           '【统一质量规则】',
           '1. 区分事实、假设、待核实内容，尤其不要对未成年人下心理诊断或给出固定性格标签。',
           '2. 使用中文、贴合中国学生和已提供教材；原创题注明原创，逐题核对答案。',
           '3. 不虚构试卷分数、过往进步、家长反馈、课程成果或教材出处。',
           '4. 建议以学生独立掌握和家长知情为目标，不故意制造依赖；课程不适合时可提出调整或停止。',
           '5. 如果缺少关键资料，基于现有材料先做能做的部分，再提出最多一个必要问题。',
-          '6. 个人学生档案默认由家教老师自己保存，不声称已自动持久化。'
+          '6. 个人学生档案默认由家教老师自己保存，不声称已自动持久化。',
+          '7. 根据输入主动把相关环节连成完整交付：立即可用的内容 → 判断与依据 → 后续安排 / 可复制档案更新。若只问一句微信怎么回，优先输出短而自然的回复，不额外堆长教案。',
+          '8. 语音转写可能存在口误、错字和自我修正；保留确定事实，重要不确定处简要标注。需要做家长沟通时给直接可发送的版本；要练口语时给自然朗读稿和停顿重读提示，但不宣称已生成音频。',
+          '9. 以上网页没有调用大模型，真正的回答由收到这段指令的 AI 提供。'
         ];
         const output = document.getElementById('output');
         output.value = parts.join('\n');
@@ -164,7 +242,7 @@
         try {
           if (!navigator.clipboard?.writeText) throw new Error('Clipboard API unavailable');
           await navigator.clipboard.writeText(text);
-          status.textContent = '已复制！打开 AI 工具粘贴即可。';
+          status.textContent = '已复制！打开 AI 粘贴；如有资料，还需在 AI 里真实上传附件。';
         } catch (_) {
           const output = document.getElementById('output');
           output.focus(); output.select();

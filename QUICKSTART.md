@@ -1,10 +1,12 @@
+> **优先使用 [AUTO-FLOW.md](AUTO-FLOW.md)：** 复制一次工作规则，之后在同一私有 AI 对话中直接发语音转写、聊天消息、教材、错题，AI 自动识别任务并组合回复。
+
 > **免安装网页入口：** 本项目提供 `docs/index.html`。仓库发布并启用 GitHub Pages 后，可在浏览器选择任务并生成可复制指令；网页本身不会调用 AI 模型。
 
 # UniTutor Flow｜使用指南
 
 ## 1. 零安装：适合大多数大学生家教
 
-1. 打开 `START-HERE.md`，复制通用指令。
+1. 打开 `AUTO-FLOW.md`，复制完整的家教助手规则。
 2. 粘贴到 ChatGPT、Claude 或其他常用 AI 聊天工具。
 3. 先建立学生和家长的初始档案，再进行诊断与备课。
 4. 每次课后输入客观记录，生成反馈和档案更新。
@@ -12,7 +14,7 @@
 
 ## 2. ChatGPT 项目
 
-可创建一个私有项目，把 `START-HERE.md` 的通用指令放入项目指令，并将必要的脱敏模板作为项目资料。每个学生建议使用独立对话/项目。项目文件是参考资料，不应一概称为原生安装 Agent Skill。不要分享含学生资料的项目。
+可创建一个私有项目，把 `AUTO-FLOW.md` 的通用指令放入项目指令，并将必要的脱敏模板作为项目资料。每个学生建议使用独立对话/项目。项目文件是参考资料，不应一概称为原生安装 Agent Skill。不要分享含学生资料的项目。
 
 ## 3. Claude.ai 自定义 Skill
 
@@ -33,8 +35,8 @@
 
 ## 6. 怎样让其他大学生使用
 
-- **最简单入口**：分享仓库的 `START-HERE.md`，用户复制指令就能用，不必安装 Skill。
-- **Skill 安装入口**：将单独的 `UniTutor-Flow-Skill-v0.3.0.zip` 上传为 GitHub Release 资产。它包含 `SKILL.md` 以及所需 references/templates/examples。具体安装步骤依平台和账号权限而异。
+- **最简单入口**：分享仓库的 `AUTO-FLOW.md`，用户复制指令就能用，不必安装 Skill。
+- **Skill 安装入口**：将单独的 `与仓库版本匹配的 Skill ZIP（另行发布）` 上传为 GitHub Release 资产。它包含 `SKILL.md` 以及所需 references/templates/examples。具体安装步骤依平台和账号权限而异。
 - **开发者入口**：完整源码包适合希望改进 Skill、模板或贡献案例的人。
 
 ## 7. 发布者：发布到 GitHub

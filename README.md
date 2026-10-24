@@ -5,7 +5,7 @@
 
 > **核心目标：** 不只帮大学生家教备好一节课，而是帮助他们持续交付看得见的教学价值，建立学生与家长的信任，让续课来自真实进步和良好合作，而不是话术或压力。
 
-当前版本：**v0.3.0 · public-preview prototype**。这是一个由提示词、Agent Skill 规则、模板和虚构案例组成的开源工具包，不是已部署的网站，也不会自动把学生资料保存到云端。
+当前版本：**v0.4.0 · public-preview prototype**。这是一个由提示词、Agent Skill 规则、模板和虚构案例组成的开源工具包，不是已部署的网站，也不会自动把学生资料保存到云端。
 
 ## 谁适合使用？
 
@@ -13,9 +13,17 @@
 - 学科知识尚可，但缺少系统的学情诊断、课堂设计和家校沟通方法；
 - 希望每节课都能积累证据、让家长理解教学价值，并提高长期合作质量的家教老师。
 
+## 从这里开始：随口说一句，交付一整套结果
+
+**首推：打开 [AUTO-FLOW.md](AUTO-FLOW.md)，复制“以下指令”到私有 ChatGPT/Claude 对话，之后在同一对话里直接发语音转写、家长消息、错题图片、试卷和课堂记录。** AI 会根据场景自行决定输出家长回复、教案、讲义、教师答案、课堂复盘或下一次计划，不要求老师每次选择模块。
+
+例：**“我今天教完初二英语，阅读十题独立对了四题，家长很关心分数；给我一段微信反馈，再规划下次课。”** → AI 应输出自然可发送的微信、根据证据的复盘、下节课优先级和可复制档案更新。
+
+注意：AI 的语音、图片、文件读取取决于其自身应用的能力。这个 GitHub 静态网页只是**指令生成器**，不会直接返回 AI 推理答案、接收或处理附件，也没有云端学生档案。
+
 ## 入口 0：一个网页就能用（适合非技术家教）
 
-本项目另附零后端的网页指令生成器：[`docs/index.html`](docs/index.html)。用户选择任务、年级和科目，就能在浏览器本地生成指令，复制到常用 AI 工具使用。**不需要 GitHub 账户，也不需要安装 Skill。**
+本项目另附零后端的网页指令生成器：[`docs/index.html`](docs/index.html)。用户默认直接自由描述（可在支持的浏览器里语音转文字），必要时补充年级和科目，就能在浏览器本地生成指令，复制到常用 AI 工具使用。网页可显示已选择的附件名，但不读取或上传附件内容；仍须去 AI 对话中实际添加附件。**不需要 GitHub 账户，也不需要安装 Skill。**
 
 发布仓库后，维护者可以在 GitHub 仓库 **Settings → Pages → Deploy from a branch → main /docs → Save** 启用 GitHub Pages。部署成功后，正式网址通常为 `https://lmyangjalen.github.io/unitutor-flow/`，须以 Pages 设置页实际显示的 URL 为准。**在启用并验证之前，请勿将该网址宣称为已上线。**
 
@@ -23,8 +31,8 @@
 
 ## 30 秒开始：零安装版本
 
-1. 打开 [`START-HERE.md`](START-HERE.md)。
-2. 复制其中的「通用家教 Flow 指令」到你常用的 AI 聊天工具。
+1. 打开 [`AUTO-FLOW.md`](AUTO-FLOW.md)。
+2. 复制其中的「以下指令」到你常用的 AI 私有对话或项目指令。
 3. 提供学生年级、科目、课时、已知问题，以及你有权使用且已脱敏的教材或错题。
 4. 课后把真实课堂表现告诉 AI，让它生成家长反馈、档案更新条目和下一次课计划。
 5. 自己保存学生档案；新对话或不同 AI 产品不一定会自动记住过去的信息。
@@ -51,6 +59,7 @@
 ```text
 unitutor-flow/
 ├── SKILL.md
+├── AUTO-FLOW.md       # 不选模块，语音/文字/资料自动路由
 ├── README.md
 ├── START-HERE.md
 ├── QUICKSTART.md
@@ -81,15 +90,15 @@ unitutor-flow/
 
 ## 分享给其他大学生：三种难度
 
-1. **最简单**：分享仓库链接，让对方打开 `START-HERE.md` 复制指令，直接在常用 AI 对话中使用。
-2. **安装 Skill**：在 GitHub Release 附上 `UniTutor-Flow-Skill-v0.3.0.zip`，适用平台支持自定义 Skills 时，对方可下载上传。这个包含 `SKILL.md`、references、templates 和虚构 examples。
+1. **最简单**：分享仓库链接，让对方打开 `AUTO-FLOW.md` 复制指令，直接在常用 AI 对话中使用。
+2. **安装 Skill**：在 GitHub Release 附上与当前版本匹配的 Skill ZIP（发布后），适用平台支持自定义 Skills 时，对方可下载上传。这个包含 `SKILL.md`、references、templates 和虚构 examples。
 3. **参与开发**：分享完整源码包或仓库，让懂技术的用户改进模板、案例和测试。
 
 ## 使用正式 Skill
 
 - **Claude.ai**：若账号支持自定义 Skills，可按 Claude 当前界面说明上传 `UniTutor-Flow-Skill-v0.3.0.zip`。
 - **Claude Code / 兼容 Agent Skills 的工具**：把包含 `SKILL.md` 的文件夹放到该工具支持的 Skills 目录，具体路径以工具官方文档为准。
-- **ChatGPT**：可把 `START-HERE.md` 指令放入项目指令，或把相关文件作为项目资料；这属于使用项目规则，不应误称为所有 ChatGPT 环境都能原生安装 Agent Skill。
+- **ChatGPT**：可把 `AUTO-FLOW.md` 指令放入项目指令，或把相关文件作为项目资料；这属于使用项目规则，不应误称为所有 ChatGPT 环境都能原生安装 Agent Skill。
 - **其他 AI 工具**：直接复制 `START-HERE.md` 的指令通常最容易开始，但效果和记忆能力取决于具体产品。
 
 更详细的说明见 [`QUICKSTART.md`](QUICKSTART.md)。
